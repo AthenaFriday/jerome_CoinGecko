@@ -159,12 +159,49 @@ fun CategoriesScreen(viewModel: CryptoViewModel) {
         viewModel.fetchCategories()
     }
 
-    LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
-        items(categories) { category ->
-            Text("• ${category.name}", style = MaterialTheme.typography.body1)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text("Coin Categories", style = MaterialTheme.typography.h6)
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (categories.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        } else {
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(categories) { category ->
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = 4.dp
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column {
+                                Text("Name: ${category.name}", style = MaterialTheme.typography.subtitle1)
+                                Text("ID: ${category.categoryId}")
+                            }
+                            Icon(
+                                imageVector = Icons.Default.List,
+                                contentDescription = null,
+                                modifier = Modifier.size(48.dp)
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
+
 
 @Composable
 fun ExchangesScreen(viewModel: CryptoViewModel) {
@@ -174,12 +211,45 @@ fun ExchangesScreen(viewModel: CryptoViewModel) {
         viewModel.fetchExchanges()
     }
 
-    LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
-        items(exchanges) { exchange ->
-            Column(Modifier.padding(vertical = 8.dp)) {
-                Text("Name: ${exchange.name}", style = MaterialTheme.typography.subtitle1)
-                Text("Country: ${exchange.country ?: "N/A"}")
-                Text("Volume (BTC): ${exchange.tradeVolume24hBtc}")
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text("Top Exchanges", style = MaterialTheme.typography.h6)
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (exchanges.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        } else {
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(exchanges) { exchange ->
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = 4.dp
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column {
+                                Text("Name: ${exchange.name}", style = MaterialTheme.typography.subtitle1)
+                                Text("Country: ${exchange.country ?: "N/A"}")
+                                Text("Volume (BTC): %.2f".format(exchange.tradeVolume24hBtc))
+                            }
+                            AsyncImage(
+                                model = exchange.image,
+                                contentDescription = null,
+                                modifier = Modifier.size(48.dp)
+                            )
+                        }
+                    }
+                }
             }
         }
     }

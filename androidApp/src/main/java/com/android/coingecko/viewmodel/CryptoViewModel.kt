@@ -8,6 +8,7 @@ import com.android.coingecko.model.Category
 import com.android.coingecko.model.Exchange
 import com.android.coingecko.model.SearchResponse
 import com.android.coingecko.model.TrendingItem
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
